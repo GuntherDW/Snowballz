@@ -46,18 +46,20 @@ public class SnowballzPlayerListener extends PlayerListener
     {
         if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
         {
-            // super.onPlayerInteract(event);
-            if (event.getItem().getType() == Material.SNOW_BALL &&
-            SnowballzUtil.hasPermission(_plugin, event.getPlayer(), SnowballzConstants.PERMISSION_CHANGEBLOCK))
+            if(event.getItem() != null)
             {
-                Block clicked = event.getPlayer().getTargetBlock(null,
-                    _plugin.getConfiguration().getInt(Snowballz.SNOW_RANGE, 10));
-                if (clicked != null && clicked.getType() != null)
+                if(event.getItem().getType() == Material.SNOW_BALL &&
+                SnowballzUtil.hasPermission(_plugin, event.getPlayer(), SnowballzConstants.PERMISSION_CHANGEBLOCK))
                 {
-                    Block above = clicked.getRelative(BlockFace.UP);
-                    if (above.getType().equals(Material.AIR))
+                    Block clicked = event.getPlayer().getTargetBlock(null,
+                        _plugin.getConfiguration().getInt(Snowballz.SNOW_RANGE, 10));
+                    if (clicked != null && clicked.getType() != null)
                     {
-                        applyConversion(clicked);
+                        Block above = clicked.getRelative(BlockFace.UP);
+                        if (above.getType().equals(Material.AIR))
+                        {
+                            applyConversion(clicked);
+                        }
                     }
                 }
             }
