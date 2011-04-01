@@ -3,7 +3,8 @@ package com.nohupgaming.minecraft.listener.player;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.event.player.PlayerItemEvent;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 
 import com.nohupgaming.minecraft.Snowballz;
@@ -19,7 +20,7 @@ public class SnowballzPlayerListener extends PlayerListener
         _plugin = plugin;
     }
     
-    @Override
+    /* @Override
     public void onPlayerItem(PlayerItemEvent event) 
     {
         super.onPlayerItem(event);
@@ -35,6 +36,29 @@ public class SnowballzPlayerListener extends PlayerListener
                 if (above.getType().equals(Material.AIR))
                 {
                     applyConversion(clicked);
+                }
+            }
+        }
+    }*/
+
+    @Override
+    public void onPlayerInteract(PlayerInteractEvent event)
+    {
+        if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK)
+        {
+            // super.onPlayerInteract(event);
+            if (event.getItem().getType() == Material.SNOW_BALL &&
+            SnowballzUtil.hasPermission(_plugin, event.getPlayer(), SnowballzConstants.PERMISSION_CHANGEBLOCK))
+            {
+                Block clicked = event.getPlayer().getTargetBlock(null,
+                    _plugin.getConfiguration().getInt(Snowballz.SNOW_RANGE, 10));
+                if (clicked != null && clicked.getType() != null)
+                {
+                    Block above = clicked.getRelative(BlockFace.UP);
+                    if (above.getType().equals(Material.AIR))
+                    {
+                        applyConversion(clicked);
+                    }
                 }
             }
         }
